@@ -34,6 +34,17 @@ def showPNG(grid, cmap=None):
     plt.xticks([]), plt.yticks([])
     plt.show()
 
+def show2PNG(grid1, grid2, cmap1=None, cmap2=None):
+    """Generate a simple image of the maze."""
+    fig = plt.figure(figsize=(10, 5))
+    plt.subplot(1,2,1)
+    plt.imshow(grid1, cmap=cmap1, interpolation='nearest')
+    plt.xticks([]), plt.yticks([])
+    plt.subplot(1,2,2)
+    plt.imshow(grid2, cmap=cmap2, interpolation='nearest')
+    plt.xticks([]), plt.yticks([])
+    plt.show()
+
 def bfs(grid, start):
     queue = collections.deque()
     queue.append(start)
@@ -64,15 +75,17 @@ def bfs(grid, start):
 
     return False , path
 
-print(m.grid)
-showPNG(m.grid, cmap1)
+
+import copy
+save_grid = copy.deepcopy(m.grid)
+
+# solve mazeand do backtracking
 success, path = bfs(m.grid, m.start)
 for i,j in path:
     if (i,j) == m.start or (i,j) == m.end:
         continue
     m.grid[i,j] = 4
 
-print(m.grid)
-showPNG(m.grid, cmap2)
+show2PNG(save_grid, m.grid, cmap1, cmap2)
 
 print(success)
