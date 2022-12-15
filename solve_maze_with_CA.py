@@ -109,5 +109,4 @@ grid_with_path = copy.deepcopy(m.grid)
 grid_with_path[tensor_grid ==0] = 5
 show3PNG(m.grid, tensor_grid, grid_with_path, plt.cm.binary, plt.cm.binary, cmap2)
 
-# plot image with binary color with imshow
-plt.imshow(m.grid, cmap=cmap1, interpolation='nearest')
+
