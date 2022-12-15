@@ -12,8 +12,8 @@ import tkinter as tk
 # set seed for numpy shuffle
 # np.random.seed(0)
 
-height = 7
-width = 7
+height = 11
+width = 11
 assert height%2 == 1 and width%2==1, "height and width have to be uneven"
 m = Maze()
 # m.generator = Prims((height-1)/2, (width-1)/2)
@@ -28,6 +28,7 @@ m.grid[m.end[1],m.end[0]] = 3
 root = tk.Tk()
 canvas = tk.Canvas(root, width=width*50, height=height*50)
 canvas.pack()
+fps = 2
 
 # make a function to draw the maze
 def draw_maze(grid):
@@ -97,7 +98,7 @@ def bfs(grid, start):
                     grid[y2,x2] = 4
                 draw_maze(grid)
                 #make a pause for 0.5 seconds
-                root.after(125)
+                root.after(round(1000/fps))
     return False , path
 
 success, path = bfs(m.grid, m.start)
