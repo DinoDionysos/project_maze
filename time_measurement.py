@@ -49,12 +49,13 @@ bfs_grid[m.start[1], m.start[0]-1] = 1
 bfs_grid[m.end[1], m.end[0]+1] = 1
 # mark beginning and end
 bfs_grid[m.start] = 2
-bfs_grid[m.end[1]-2, m.end[0]-2] = 3
+bfs_grid[m.end[1], m.end[0]] = 3
 
 start_time = time.time()
 success, path = bfs(bfs_grid, m.start, width, height)
 end_time = time.time()
-print("time bfs: ", end_time-start_time)
+bfs_time = end_time-start_time
+print("time bfs: ", bfs_time)
 
 # for dfs
 # build back the walls back up
@@ -63,13 +64,14 @@ dfs_grid[m.start[1], m.start[0]-1] = 1
 dfs_grid[m.end[1], m.end[0]+1] = 1
 # mark beginning and end
 dfs_grid[m.start] = 2
-dfs_grid[m.end[1]-2, m.end[0]-2] = 3
+dfs_grid[m.end[1], m.end[0]] = 3
 # start timer
 start = time.time()
 success, path = dfs(dfs_grid, m.start, width, height)
 #end timer
 end = time.time()
-print("time dfs: ", end - start)
+dfs_time = end-start
+print("time dfs: ", dfs_time)
 
 
 # for CA
@@ -84,7 +86,8 @@ count, tensor_grid = ca(ca_grid, kernel)
 # end time
 end_time = time.time()
 print("count: ", count)
-print("time CA: ", end_time-start_time)
+ca_time = end_time-start_time
+print("time CA: ", ca_time)
 
 
 # plot
@@ -94,7 +97,10 @@ grid_with_path[tensor_grid ==0] = 5
 
 grids = [grid_with_path, bfs_grid, dfs_grid]
 cmaps = [cmap2, cmap2, cmap2]
-titles=["CA", "BFS", "DFS"]
+titles=[]
+titles.append("CA " + "time: " + str(round(ca_time *1000,1)) + "ms")
+titles.append("BFS " + "time: " + str(round(bfs_time *1000,1)) + "ms")
+titles.append("DFS " + "time: " + str(round(dfs_time *1000,1)) + "ms")
 
 showNPNG(grids, cmaps, titles)
 
