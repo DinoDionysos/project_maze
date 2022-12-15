@@ -91,7 +91,11 @@ save_grid = copy.deepcopy(m.grid)
 save_grid[0,0] = 0
 print(save_grid)
 # solve mazeand do backtracking
+import time
+start_time = time.time()
 success, path = bfs(m.grid, m.start)
+end_time = time.time()
+print("time bfs: ", end_time-start_time)
 
 print(m.grid)
 m.grid[0,0] = 0

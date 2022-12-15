@@ -10,6 +10,7 @@ import numpy as np
 import copy
 import tkinter as tk
 from PIL import Image, ImageTk
+import time
 
 # set seed for numpy shuffle
 np.random.seed(2)
@@ -80,6 +81,8 @@ kernel = torch.tensor([[0,1,0],[1,0,1],[0,1,0]]).float().cuda()
 # print kernel type
 # save m.grid in a tensor with the same type as kernel
 tensor_grid = torch.tensor(long_grid).float().cuda()
+# start time
+start_time = time.time()
 # make convolution and padd the borders with ones
 conv_grid = torch.nn.functional.conv2d(tensor_grid.unsqueeze(0).unsqueeze(0), kernel.unsqueeze(0).unsqueeze(0), padding=1).squeeze(0).squeeze(0)
 # where conv_grid >= 7, set tensor_grid to 1
@@ -96,7 +99,9 @@ while not torch.equal(tensor_grid, temp_grid):
     # where conv_grid >= 7, set tensor_grid to 1
     tensor_grid[conv_grid >= 3] = 1
     count += 1
-
+# end time
+end_time = time.time()
+print("time CA: ", end_time-start_time)
 print("count: ", count)
 
 
