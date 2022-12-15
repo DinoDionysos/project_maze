@@ -11,6 +11,8 @@ import copy
 import tkinter as tk
 from PIL import Image, ImageTk
 
+from util import draw_maze, draw_maze2
+
 # set seed for numpy shuffle
 np.random.seed(2)
 
@@ -82,94 +84,6 @@ canvas = tk.Canvas(frame, width=width*size_rectangles, height=height*size_rectan
 canvas.pack(side=tk.LEFT)
 canvas2 = tk.Canvas(frame, width=width*size_rectangles, height=height*size_rectangles, bg="white")
 canvas2.pack(side=tk.LEFT)
-
-# make a function to draw the maze with the size of the rectangles as a parameter
-def draw_maze(grid, canvas, size):
-    # clear the canvas
-    canvas.delete("all")
-    # loop over the grid
-    for y in range(height):
-        for x in range(width):
-            # if the grid is a space
-            if grid[y][x] == 0:
-                # draw a black rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="white")
-            # if the grid is a wall
-            if grid[y][x] == 1:
-                # draw a black rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="black")
-            # if the grid is the start
-            elif grid[y][x] == 2:
-                # draw a green rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="green")
-            # if the grid is the end
-            elif grid[y][x] == 3:
-                # draw a red rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="purple")
-            # if the grid is a seen
-            elif grid[y][x] == 4:
-                # draw a blue rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="lightblue")
-            # if the grid is a path
-            elif grid[y][x] == 5:
-                # draw a blue rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="red")
-    # update the canvas
-    canvas.update()
-
-# make function that takes an image as numpy array and then shows it on the canvas
-def draw_image(grid, canvas, size):
-    image = grid.cpu().numpy()
-    # create new numpy array of size times the size of the image
-    # use PIL to convert the numpy array to a PhotoImage
-    # print shape of image
-    print(image.shape)
-    image = image / np.max(image) * 255
-    image = Image.fromarray(image)
-    image = image.resize((width*size, height*size))
-    image = ImageTk.PhotoImage(image)
-    # put it in the canvas
-    canvas.create_image(0,0, image=image, anchor=tk.NW)
-    # update the canvas
-    canvas.update()
-
-# make a function to draw the maze with the size of the rectangles as a parameter
-def draw_maze2(grid, canvas, size):
-    # clear the canvas
-    canvas.delete("all")
-    # loop over the grid
-    for y in range(height):
-        for x in range(width):
-            # if the grid is a space
-            if grid[y][x] == 0:
-                # draw a black rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="white")
-            # if the grid is a wall
-            if grid[y][x] == 1:
-                # draw a black rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="black")
-            # if the grid is the start
-            elif grid[y][x] == 2:
-                # draw a green rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="green")
-            # if the grid is the end
-            elif grid[y][x] == 3:
-                # draw a red rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="red")
-            # if the grid is a seen
-            elif grid[y][x] == 4:
-                # draw a blue rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="blue")
-            # if the grid is a path
-            elif grid[y][x] == 5:
-                # draw a blue rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="blue")
-            # if the grid is a path
-            elif grid[y][x] == 6:
-                # draw a blue rectangle
-                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="blue")
-    # update the canvas
-    canvas.update()
 
 # print the type of the entries of m.grid
 # transform m.grid to numpy array with type long
