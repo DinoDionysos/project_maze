@@ -22,7 +22,9 @@ def ca(grid, kernel):
         count += 1
     return count, tensor_grid
 
-def bfs(grid, start, width, height):
+def bfs(grid, start):
+    height = len(grid)
+    width = len(grid[0])
     queue = collections.deque()
     queue.append(start)
     seen = set([start])
@@ -33,6 +35,8 @@ def bfs(grid, start, width, height):
         next_step = queue.popleft()
         # print(next_step)
         y, x = next_step
+        if grid[y,x] != 3 and grid[y,x] != 2:
+            grid[y,x] = 4
         if grid[y][x] == 3:
             # do backtracking to find the path
             while (y,x) != start:
@@ -51,12 +55,12 @@ def bfs(grid, start, width, height):
                 queue.append( (y2, x2))
                 seen.add((y2, x2))
                 successor[y2][x2] = (y,x)
-                if grid[y2,x2] != 3:
-                    grid[y2,x2] = 4
     return False , path
 
 # function dfs
-def dfs(grid, start, width, height):
+def dfs(grid, start):
+    height = len(grid)
+    width = len(grid[0])
     stack = collections.deque()
     stack.append(start)
     seen = set([start])
@@ -67,6 +71,8 @@ def dfs(grid, start, width, height):
         next_step = stack.pop()
         # print(next_step)
         y, x = next_step
+        if grid[y,x] != 3 and grid[y,x] != 2:
+            grid[y,x] = 4
         if grid[y][x] == 3:
             # do backtracking to find the path
             while (y,x) != start:
@@ -85,6 +91,4 @@ def dfs(grid, start, width, height):
                 stack.append( (y2, x2))
                 seen.add((y2, x2))
                 successor[y2][x2] = (y,x)
-                if grid[y2,x2] != 3:
-                    grid[y2,x2] = 4
     return False , path
