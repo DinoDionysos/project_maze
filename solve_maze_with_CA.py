@@ -8,8 +8,6 @@ from matplotlib.colors import ListedColormap
 import collections
 import numpy as np
 import copy
-import tkinter as tk
-from PIL import Image, ImageTk
 import time
 
 # set seed for numpy shuffle
@@ -18,7 +16,7 @@ np.random.seed(2)
 fps = 2
 size_rectangles = 15
 
-side_length_square = 31
+side_length_square = 101
 height = side_length_square
 width = side_length_square
 if height%2 == 0:
@@ -73,38 +71,39 @@ def show3PNG(grid1, grid2, grid3, cmap1=None, cmap2=None, cmap3=None):
     plt.xticks([]), plt.yticks([])
     plt.show()
 
-# print the type of the entries of m.grid
-# transform m.grid to numpy array with type long
-long_grid = m.grid.astype(np.long)
+
+
 
 kernel = torch.tensor([[0,1,0],[1,0,1],[0,1,0]]).float().cuda()
-# print kernel type
-# save m.grid in a tensor with the same type as kernel
-tensor_grid = torch.tensor(long_grid).float().cuda()
+def ca(grid, kernel):
+    tensor_grid = torch.tensor(m.grid).float().cuda()
+    # make convolution and padd the borders
+    conv_grid = torch.nn.functional.conv2d(tensor_grid.unsqueeze(0).unsqueeze(0), kernel.unsqueeze(0).unsqueeze(0), padding=1).squeeze(0).squeeze(0)
+    # where conv_grid >= 3, set tensor_grid to 1
+    temp_grid = copy.deepcopy(tensor_grid)
+    tensor_grid[conv_grid >= 3] = 1
+    # while tensor_grid not equal to temp_grid
+    count = 0
+    # TODO problem: tensor_grid and temp_grid are the same but they shouldnt
+    while not torch.equal(tensor_grid, temp_grid):
+        # temp = tensor_grid
+        temp_grid = copy.deepcopy(tensor_grid)
+        # make convolution
+        conv_grid = torch.nn.functional.conv2d(tensor_grid.unsqueeze(0).unsqueeze(0), kernel.unsqueeze(0).unsqueeze(0), padding=1).squeeze(0).squeeze(0)
+        # where conv_grid >= 3, set tensor_grid to 1
+        tensor_grid[conv_grid >= 3] = 1
+        count += 1
+    return count, tensor_grid
+
 # start time
 start_time = time.time()
-# make convolution and padd the borders with ones
-conv_grid = torch.nn.functional.conv2d(tensor_grid.unsqueeze(0).unsqueeze(0), kernel.unsqueeze(0).unsqueeze(0), padding=1).squeeze(0).squeeze(0)
-# where conv_grid >= 7, set tensor_grid to 1
-temp_grid = copy.deepcopy(tensor_grid)
-tensor_grid[conv_grid >= 3] = 1
-# while tensor_grid not equal to temp_grid
-count = 0
-# TODO problem: tensor_grid and temp_grid are the same but they shouldnt
-while not torch.equal(tensor_grid, temp_grid):
-    # temp = tensor_grid
-    temp_grid = copy.deepcopy(tensor_grid)
-    # make convolution
-    conv_grid = torch.nn.functional.conv2d(tensor_grid.unsqueeze(0).unsqueeze(0), kernel.unsqueeze(0).unsqueeze(0), padding=1).squeeze(0).squeeze(0)
-    # where conv_grid >= 7, set tensor_grid to 1
-    tensor_grid[conv_grid >= 3] = 1
-    count += 1
+count, tensor_grid = ca(m.grid, kernel)
 # end time
 end_time = time.time()
 print("time CA: ", end_time-start_time)
-print("count: ", count)
+# print("count: ", count)
 
-conv_grid = conv_grid.cpu().numpy()
+
 tensor_grid = tensor_grid.cpu().numpy()
 grid_with_path = copy.deepcopy(m.grid)
 grid_with_path[tensor_grid ==0] = 5
