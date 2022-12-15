@@ -104,7 +104,6 @@ end_time = time.time()
 print("time CA: ", end_time-start_time)
 print("count: ", count)
 
-
 conv_grid = conv_grid.cpu().numpy()
 tensor_grid = tensor_grid.cpu().numpy()
 grid_with_path = copy.deepcopy(m.grid)
@@ -113,7 +112,3 @@ show3PNG(m.grid, tensor_grid, grid_with_path, plt.cm.binary, plt.cm.binary, cmap
 
 # plot image with binary color with imshow
 plt.imshow(m.grid, cmap=cmap1, interpolation='nearest')
-
-
-
-
