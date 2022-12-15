@@ -41,3 +41,80 @@ def showNPNG(grids, cmaps, titles):
         plt.xticks([]), plt.yticks([])
         plt.title(titles[i])
     plt.show()
+
+
+    # make a function to draw the maze with the size of the rectangles as a parameter
+def draw_maze(grid, canvas, size):
+    height = len(grid)
+    width = len(grid[0])
+    # clear the canvas
+    canvas.delete("all")
+    # loop over the grid
+    for y in range(height):
+        for x in range(width):
+            # if the grid is a space
+            if grid[y][x] == 0:
+                # draw a black rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="white")
+            # if the grid is a wall
+            if grid[y][x] == 1:
+                # draw a black rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="black")
+            # if the grid is the start
+            elif grid[y][x] == 2:
+                # draw a green rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="green")
+            # if the grid is the end
+            elif grid[y][x] == 3:
+                # draw a red rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="purple")
+            # if the grid is a seen
+            elif grid[y][x] == 4:
+                # draw a blue rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="#08f")
+            # if the grid is a path
+            elif grid[y][x] == 5:
+                # draw a blue rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="red")
+    # update the canvas
+    canvas.update()
+
+# make a function to draw the maze with the size of the rectangles as a parameter
+def draw_maze2(grid, canvas, size):
+    height = len(grid)
+    width = len(grid[0])
+    # clear the canvas
+    canvas.delete("all")
+    # loop over the grid
+    for y in range(height):
+        for x in range(width):
+            # if the grid is a space
+            if grid[y][x] == 0:
+                # draw a black rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="white")
+            # if the grid is a wall
+            if grid[y][x] == 1:
+                # draw a black rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="black")
+            # if the grid is the start
+            elif grid[y][x] == 2:
+                # draw a green rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="green")
+            # if the grid is the end
+            elif grid[y][x] == 3:
+                # draw a red rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="red")
+            # if the grid is a seen
+            elif grid[y][x] == 4:
+                # draw a blue rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="blue")
+            # if the grid is a path
+            elif grid[y][x] == 5:
+                # draw a blue rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="blue")
+            # if the grid is a path
+            elif grid[y][x] == 6:
+                # draw a blue rectangle
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="blue")
+    # update the canvas
+    canvas.update()
