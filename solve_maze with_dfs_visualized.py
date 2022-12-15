@@ -12,8 +12,11 @@ import tkinter as tk
 # set seed for numpy shuffle
 np.random.seed(2)
 
-height = 11
-width = 11
+size_rectangles = 15
+
+side_length_square = 31
+height = side_length_square
+width = side_length_square
 assert height%2 == 1 and width%2==1, "height and width have to be uneven"
 m = Maze()
 # m.generator = Prims((height-1)/2, (width-1)/2)
@@ -26,12 +29,12 @@ m.grid[m.end[1],m.end[0]] = 3
 
 # make a tkinter window with a canvas that will show the maze
 root = tk.Tk()
-canvas = tk.Canvas(root, width=width*50, height=height*50)
+canvas = tk.Canvas(root, width=width*size_rectangles, height=height*size_rectangles)
 canvas.pack()
 fps = 2
 
 # make a function to draw the maze
-def draw_maze(grid):
+def draw_maze(grid, size):
     # clear the canvas
     canvas.delete("all")
     # loop over the grid
@@ -40,27 +43,27 @@ def draw_maze(grid):
             # if the grid is a space
             if grid[y][x] == 0:
                 # draw a black rectangle
-                canvas.create_rectangle(x*50, y*50, x*50+50, y*50+50, fill="white")
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="white")
             # if the grid is a wall
             if grid[y][x] == 1:
                 # draw a black rectangle
-                canvas.create_rectangle(x*50, y*50, x*50+50, y*50+50, fill="black")
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="black")
             # if the grid is the start
             elif grid[y][x] == 2:
                 # draw a green rectangle
-                canvas.create_rectangle(x*50, y*50, x*50+50, y*50+50, fill="green")
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="green")
             # if the grid is the end
             elif grid[y][x] == 3:
                 # draw a red rectangle
-                canvas.create_rectangle(x*50, y*50, x*50+50, y*50+50, fill="purple")
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="purple")
             # if the grid is a seen
             elif grid[y][x] == 4:
                 # draw a blue rectangle
-                canvas.create_rectangle(x*50, y*50, x*50+50, y*50+50, fill="lightblue")
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="lightblue")
             # if the grid is a path
             elif grid[y][x] == 5:
                 # draw a blue rectangle
-                canvas.create_rectangle(x*50, y*50, x*50+50, y*50+50, fill="red")
+                canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="red")
     # update the canvas
     canvas.update()
 
@@ -87,7 +90,7 @@ def dfs(grid, start):
                 y,x = successor[y][x]
             path.append(m.start)
             path.reverse()
-            draw_maze(grid)
+            draw_maze(grid, size_rectangles)
             return True, path
         for y2, x2 in ((y+1,x), (y-1,x), (y,x+1), (y,x-1)): #directions
             if ( 0 <= x2 < width and  #X-axis in range
@@ -96,9 +99,9 @@ def dfs(grid, start):
                 (y2, x2) not in seen): #not visited
                 stack.append( (y2, x2))
                 successor[y2][x2] = (y,x)
-                draw_maze(grid)
+                draw_maze(grid, size_rectangles)
                 #make a pause for 0.5 seconds
-                root.after(round(1000/fps))
+                # root.after(round(1000/fps))
     return False , path
 
 success, path = dfs(m.grid, m.start)
