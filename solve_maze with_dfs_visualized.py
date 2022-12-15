@@ -52,7 +52,7 @@ def draw_maze(grid):
             # if the grid is the end
             elif grid[y][x] == 3:
                 # draw a red rectangle
-                canvas.create_rectangle(x*50, y*50, x*50+50, y*50+50, fill="red")
+                canvas.create_rectangle(x*50, y*50, x*50+50, y*50+50, fill="purple")
             # if the grid is a seen
             elif grid[y][x] == 4:
                 # draw a blue rectangle
@@ -60,7 +60,7 @@ def draw_maze(grid):
             # if the grid is a path
             elif grid[y][x] == 5:
                 # draw a blue rectangle
-                canvas.create_rectangle(x*50, y*50, x*50+50, y*50+50, fill="blue")
+                canvas.create_rectangle(x*50, y*50, x*50+50, y*50+50, fill="red")
     # update the canvas
     canvas.update()
 
