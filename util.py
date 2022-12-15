@@ -31,3 +31,13 @@ def show3PNG(grid1, grid2, grid3, cmap1=None, cmap2=None, cmap3=None):
     plt.imshow(grid3, cmap=cmap3, interpolation='nearest')
     plt.xticks([]), plt.yticks([])
     plt.show()
+
+def showNPNG(grids, cmaps, titles):
+    """Generate a simple image of the maze."""
+    fig = plt.figure(figsize=(10, 5))
+    for i in range(len(grids)):
+        plt.subplot(1,3,i+1)
+        plt.imshow(grids[i], cmap=cmaps[i], interpolation='nearest')
+        plt.xticks([]), plt.yticks([])
+        plt.title(titles[i])
+    plt.show()
