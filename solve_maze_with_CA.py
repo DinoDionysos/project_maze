@@ -8,11 +8,16 @@ from matplotlib.colors import ListedColormap
 import collections
 import numpy as np
 import copy
+import tkinter as tk
+from PIL import Image, ImageTk
 
 # set seed for numpy shuffle
 np.random.seed(2)
 
-side_length_square = 11
+fps = 2
+size_rectangles = 15
+
+side_length_square = 31
 height = side_length_square
 width = side_length_square
 if height%2 == 0:
@@ -67,21 +72,19 @@ def show3PNG(grid1, grid2, grid3, cmap1=None, cmap2=None, cmap3=None):
     plt.xticks([]), plt.yticks([])
     plt.show()
 
-
-
 # print the type of the entries of m.grid
 # transform m.grid to numpy array with type long
 long_grid = m.grid.astype(np.long)
 
-kernel = torch.tensor([[1,1,1],[1,0,1],[1,1,1]]).float().cuda()
+kernel = torch.tensor([[0,1,0],[1,0,1],[0,1,0]]).float().cuda()
 # print kernel type
 # save m.grid in a tensor with the same type as kernel
 tensor_grid = torch.tensor(long_grid).float().cuda()
-# make convolution
+# make convolution and padd the borders with ones
 conv_grid = torch.nn.functional.conv2d(tensor_grid.unsqueeze(0).unsqueeze(0), kernel.unsqueeze(0).unsqueeze(0), padding=1).squeeze(0).squeeze(0)
 # where conv_grid >= 7, set tensor_grid to 1
 temp_grid = copy.deepcopy(tensor_grid)
-tensor_grid[conv_grid >= 7] = 1
+tensor_grid[conv_grid >= 3] = 1
 # while tensor_grid not equal to temp_grid
 count = 0
 # TODO problem: tensor_grid and temp_grid are the same but they shouldnt
@@ -91,20 +94,20 @@ while not torch.equal(tensor_grid, temp_grid):
     # make convolution
     conv_grid = torch.nn.functional.conv2d(tensor_grid.unsqueeze(0).unsqueeze(0), kernel.unsqueeze(0).unsqueeze(0), padding=1).squeeze(0).squeeze(0)
     # where conv_grid >= 7, set tensor_grid to 1
-    tensor_grid[conv_grid >= 7] = 1
+    tensor_grid[conv_grid >= 3] = 1
     count += 1
-    print(torch.equal(tensor_grid, temp_grid))
-    show3PNG(temp_grid.cpu().numpy(), tensor_grid.cpu().numpy(), conv_grid.cpu().numpy()>=7, plt.cm.binary, plt.cm.binary, plt.cm.binary)
 
 print("count: ", count)
 
-# print(m.grid)
-m.grid[0,0] = 0
+
 conv_grid = conv_grid.cpu().numpy()
-show3PNG(m.grid, tensor_grid.cpu().numpy(), conv_grid>=7, plt.cm.binary, plt.cm.binary, plt.cm.binary)
+tensor_grid = tensor_grid.cpu().numpy()
+grid_with_path = copy.deepcopy(m.grid)
+grid_with_path[tensor_grid ==0] = 5
+show3PNG(m.grid, tensor_grid, grid_with_path, plt.cm.binary, plt.cm.binary, cmap2)
 
 # plot image with binary color with imshow
-# plt.imshow(m.grid, cmap=cmap1, interpolation='nearest')
+plt.imshow(m.grid, cmap=cmap1, interpolation='nearest')
 
 
 
