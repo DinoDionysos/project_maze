@@ -11,7 +11,7 @@ import numpy as np
 # set seed for numpy shuffle
 # np.random.seed(2)
 
-side_length_square = 50
+side_length_square = 101
 height = side_length_square
 width = side_length_square
 if height%2 == 0:
@@ -89,7 +89,6 @@ def dfs(grid, start):
 import copy
 save_grid = copy.deepcopy(m.grid)
 save_grid[0,0] = 0
-print(save_grid)
 # solve mazeand do backtracking
 import time
 # start timer
@@ -99,7 +98,7 @@ success, path = dfs(m.grid, m.start)
 end = time.time()
 print("time dfs: ", end - start)
 
-print(m.grid)
+
 m.grid[0,0] = 0
 show2PNG(save_grid, m.grid, cmap1, cmap2)
 
