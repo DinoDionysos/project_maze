@@ -22,7 +22,7 @@ size_rectangles = 15
 cmap1 = ListedColormap(['white', 'black', (0.4,1,0.2), 'blue'])
 cmap2 = ListedColormap(['white', 'black', (0.4,1,0.2), 'blue', (0,0.6,1), 'red'])
 
-side_length_square = 201
+side_length_square = 101
 height = side_length_square
 width = side_length_square
 
@@ -87,6 +87,16 @@ print("count: ", count)
 print("time CA: ", end_time-start_time)
 
 
+# plot
+tensor_grid = tensor_grid.cpu().numpy()
+grid_with_path = copy.deepcopy(m.grid)
+grid_with_path[tensor_grid ==0] = 5
+
+grids = [grid_with_path, bfs_grid, dfs_grid]
+cmaps = [cmap2, cmap2, cmap2]
+titles=["CA", "BFS", "DFS"]
+
+showNPNG(grids, cmaps, titles)
 
 
 
