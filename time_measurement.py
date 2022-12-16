@@ -41,6 +41,9 @@ print(m.grid)
 m.start = (1, 1)
 m.end = (height-2, width-2)
 
+# get the number of 0 in m.grid
+num_ones = np.count_nonzero(m.grid == 0)
+
 # for bfs
 # build back the walls back up
 bfs_grid = copy.deepcopy(m.grid)
@@ -51,7 +54,8 @@ bfs_grid[m.start] = 2
 bfs_grid[m.end[0], m.end[1]] = 3
 
 start_time = time.time()
-success, path = bfs(bfs_grid, m.start)
+success, path, bfs_seen = bfs(bfs_grid, m.start)
+bfs_frac_seen = len(bfs_seen)/num_ones
 end_time = time.time()
 bfs_time = end_time-start_time
 print("time bfs: ", bfs_time)
@@ -66,7 +70,8 @@ dfs_grid[m.start] = 2
 dfs_grid[m.end[0], m.end[1]] = 3
 # start timer
 start = time.time()
-success, path = dfs(dfs_grid, m.start)
+success, path, dfs_seen = dfs(dfs_grid, m.start)
+dfs_frac_seen = len(dfs_seen)/num_ones
 #end timer
 end = time.time()
 dfs_time = end-start
@@ -92,14 +97,14 @@ print("time CA: ", ca_time)
 # plot
 tensor_grid = tensor_grid.cpu().numpy()
 grid_with_path = copy.deepcopy(m.grid)
-grid_with_path[tensor_grid ==0] = 5
+grid_with_path[tensor_grid == 0] = 5
 
 grids = [grid_with_path, bfs_grid, dfs_grid]
 cmaps = [cmap2, cmap2, cmap2]
 titles=[]
-titles.append("CA " + "time: " + str(round(ca_time *1000,1)) + "ms")
-titles.append("BFS " + "time: " + str(round(bfs_time *1000,1)) + "ms")
-titles.append("DFS " + "time: " + str(round(dfs_time *1000,1)) + "ms")
+titles.append("CA, " + "time: " + str(round(ca_time *1000,1)) + "ms \n")
+titles.append("BFS, " + "time: " + str(round(bfs_time *1000,1)) + "ms, \nfrac seen: " + str(round(bfs_frac_seen,2)))
+titles.append("DFS, " + "time: " + str(round(dfs_time *1000,1)) + "ms, \nfrac seen: " + str(round(dfs_frac_seen,2)))
 
 showNPNG(grids, cmaps, titles)
 

@@ -46,7 +46,7 @@ def bfs(grid, start):
                 y,x = successor[y][x]
             path.append(start)
             path.reverse()
-            return True, path
+            return True, path, seen
         for y2, x2 in ((y+1,x), (y-1,x), (y,x+1), (y,x-1)): #directions
             if ( 0 <= x2 < width and  #X-axis in range
                 0 <= y2 < height and  #y-axis
@@ -55,7 +55,7 @@ def bfs(grid, start):
                 queue.append( (y2, x2))
                 seen.add((y2, x2))
                 successor[y2][x2] = (y,x)
-    return False , path
+    return False , path, seen
 
 # function dfs
 def dfs(grid, start):
@@ -82,7 +82,7 @@ def dfs(grid, start):
                 y,x = successor[y][x]
             path.append(start)
             path.reverse()
-            return True, path
+            return True, path, seen
         for y2, x2 in ((y+1,x), (y-1,x), (y,x+1), (y,x-1)): #directions
             if ( 0 <= x2 < width and  #X-axis in range
                 0 <= y2 < height and  #y-axis
@@ -91,4 +91,4 @@ def dfs(grid, start):
                 stack.append( (y2, x2))
                 seen.add((y2, x2))
                 successor[y2][x2] = (y,x)
-    return False , path
+    return False , path, seen
