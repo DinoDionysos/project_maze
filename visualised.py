@@ -1,6 +1,5 @@
 import copy
 import tkinter as tk
-from copy import deepcopy
 
 import numpy as np
 from mazelib import Maze
@@ -45,10 +44,6 @@ for algo in algorithms:
 for idx, algo in enumerate(algorithms):
     maze = algo_grids[idx]
     grid = maze.grid
-    print(algo.__name__)
-    if algo.__name__ == 'ca':
-        grid = np.array(grid)
-    print(grid)
     success, path, seen = algo(grid, maze.start, algo_canvas[idx], size_rectangles)
 
 root.mainloop()

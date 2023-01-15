@@ -1,14 +1,19 @@
 import collections
 import copy
+import numpy as np
 
 import torch
 
 from util import getPytorchDevice, draw_maze
 
 
-def ca(grid, kernel, canvas, size_rectangles):
-    tensor_grid = torch.tensor(grid).float().to(getPytorchDevice())
-    # make convolution and padd the borders
+def ca(grid, start=None, canvas=None, size_rectangles=None):
+    """ start is not used in this example"""
+    long_grid = grid.astype(np.long)
+    tensor_grid = torch.tensor(long_grid).float().to(getPytorchDevice())
+    kernel = torch.tensor([[0, 1, 0], [1, 0, 1], [0, 1, 0]]).float().to(getPytorchDevice())
+
+    # make convolution and padd the borders with ones
     conv_grid = torch.nn.functional.conv2d(tensor_grid.unsqueeze(0).unsqueeze(0), kernel.unsqueeze(0).unsqueeze(0),
                                            padding=1).squeeze(0).squeeze(0)
     # where conv_grid >= 3, set tensor_grid to 1
@@ -27,10 +32,11 @@ def ca(grid, kernel, canvas, size_rectangles):
         tensor_grid[conv_grid >= 3] = 1
         count += 1
         draw_maze(tensor_grid, canvas, size_rectangles)
+
     return count, tensor_grid
 
 
-def bfs(grid, start, canvas, size_rectangles):
+def bfs(grid, start, canvas=None, size_rectangles=None):
     height = len(grid)
     width = len(grid[0])
     queue = collections.deque()
@@ -69,7 +75,7 @@ def bfs(grid, start, canvas, size_rectangles):
 
 
 # function dfs
-def dfs(grid, start, canvas, size_rectangles):
+def dfs(grid, start, canvas=None, size_rectangles=None):
     height = len(grid)
     width = len(grid[0])
 

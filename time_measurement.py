@@ -75,11 +75,10 @@ print("time dfs: ", dfs_time)
 ca_grid = copy.deepcopy(m.grid)
 ca_grid[m.start[0], m.start[1] - 1] = 0
 ca_grid[m.end[0], m.end[1] + 1] = 0
-kernel = torch.tensor([[0, 1, 0], [1, 0, 1], [0, 1, 0]]).float().to(getPytorchDevice())
 
 # start time
 start_time = time.time()
-count, tensor_grid = ca(ca_grid, kernel)
+count, tensor_grid = ca(ca_grid)
 # end time
 end_time = time.time()
 print("count: ", count)
