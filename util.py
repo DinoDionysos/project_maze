@@ -74,7 +74,7 @@ def draw_maze(grid, canvas, size):
                 canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="#08f")
             # if the grid is a path
             elif grid[y][x] == 5:
-                # draw a blue rectangle
+                # draw a red rectangle
                 canvas.create_rectangle(x*size, y*size, x*size+size, y*size+size, fill="red")
     # update the canvas
     canvas.update()
