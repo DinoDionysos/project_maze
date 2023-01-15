@@ -1,15 +1,12 @@
-from mazelib.generate.Prims import Prims
-from mazelib.generate.Kruskal import Kruskal
-from mazelib import Maze
-from mazelib.solve.BacktrackingSolver import BacktrackingSolver
-import torch
-from matplotlib.colors import ListedColormap
-import numpy as np
-import copy
 import time
 
-from util import *
+import numpy as np
+from matplotlib.colors import ListedColormap
+from mazelib import Maze
+from mazelib.generate.Prims import Prims
+
 from solver import *
+from util import *
 
 # set seed for numpy shuffle
 np.random.seed(2)
