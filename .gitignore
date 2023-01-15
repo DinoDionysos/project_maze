@@ -13,3 +13,5 @@ Documentation.docx
 *.docx
 *.pdf
 *.txt
+
+.idea/
