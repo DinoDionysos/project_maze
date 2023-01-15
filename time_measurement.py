@@ -1,15 +1,12 @@
-from mazelib.generate.Prims import Prims
-from mazelib.generate.Kruskal import Kruskal
-from mazelib import Maze
-from mazelib.solve.BacktrackingSolver import BacktrackingSolver
-import torch
-from matplotlib.colors import ListedColormap
-import numpy as np
-import copy
 import time
 
-from util import *
+import numpy as np
+from matplotlib.colors import ListedColormap
+from mazelib import Maze
+from mazelib.generate.Prims import Prims
+
 from solver import *
+from util import *
 
 # set seed for numpy shuffle
 np.random.seed(2)
@@ -78,11 +75,10 @@ print("time dfs: ", dfs_time)
 ca_grid = copy.deepcopy(m.grid)
 ca_grid[m.start[0], m.start[1] - 1] = 0
 ca_grid[m.end[0], m.end[1] + 1] = 0
-kernel = torch.tensor([[0, 1, 0], [1, 0, 1], [0, 1, 0]]).float().to(getPytorchDevice())
 
 # start time
 start_time = time.time()
-count, tensor_grid = ca(ca_grid, kernel)
+count, tensor_grid = ca(ca_grid)
 # end time
 end_time = time.time()
 print("count: ", count)
