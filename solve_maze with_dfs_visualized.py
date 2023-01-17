@@ -1,6 +1,6 @@
 import collections
 import tkinter as tk
-
+import time
 import numpy as np
 from mazelib import Maze
 from mazelib.generate.Kruskal import Kruskal
@@ -27,10 +27,16 @@ m.grid[m.end[1], m.end[0]] = 3
 
 # make a tkinter window with a canvas that will show the maze
 root = tk.Tk()
+root.title("DFS: Solving maze with depth first search")
+widget = tk.Label(root, text='DFS: Solving maze with depth first search', fg='white', bg='black')
+widget.pack()
 canvas = tk.Canvas(root, width=width * size_rectangles, height=height * size_rectangles)
 canvas.pack()
 fps = 2
+# add label 
 
+draw_maze(m.grid, canvas, size_rectangles)
+time.sleep(1)
 
 def dfs(grid, start):
     stack = collections.deque()

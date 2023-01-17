@@ -1,6 +1,6 @@
 import collections
 import tkinter as tk
-
+import time
 import numpy as np
 from mazelib import Maze
 from mazelib.generate.Kruskal import Kruskal
@@ -26,10 +26,15 @@ m.grid[m.end[1], m.end[0]] = 3
 
 # make a tkinter window with a canvas that will show the maze
 root = tk.Tk()
+root.title("BFS: Solving maze with breadth first search")
+widget = tk.Label(root, text="BFS: Solving maze with breadth first search", fg='white', bg='black')
+widget.pack()
 canvas = tk.Canvas(root, width=width * size_rectangle, height=height * size_rectangle)
 canvas.pack()
 fps = 2
 
+draw_maze(m.grid, canvas, size_rectangle)
+time.sleep(1)
 
 def bfs(grid, start):
     queue = collections.deque()

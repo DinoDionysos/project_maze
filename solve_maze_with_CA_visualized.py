@@ -1,6 +1,6 @@
 import copy
 import tkinter as tk
-
+import time
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
@@ -76,18 +76,21 @@ def show3PNG(grid1, grid2, grid3, cmap1=None, cmap2=None, cmap3=None):
 
 # make a tkinter window with a canvas that will show the maze
 root = tk.Tk()
+root.title("CA: Solving maze with a cellular automaton")
+widget = tk.Label(root, text="CA: Solving maze with a cellular automaton", fg='white', bg='black')
+widget.pack()
 # make frame
 frame = tk.Frame(root)
 frame.pack()
 # make two canvas in the frame next to each other
 canvas = tk.Canvas(frame, width=width * size_rectangles, height=height * size_rectangles, bg="white")
 canvas.pack(side=tk.LEFT)
-canvas2 = tk.Canvas(frame, width=width * size_rectangles, height=height * size_rectangles, bg="white")
-canvas2.pack(side=tk.LEFT)
+
+draw_maze(m.grid, canvas, size_rectangles)
 
 # print the type of the entries of m.grid
 # transform m.grid to numpy array with type long
-long_grid = m.grid.astype(np.long)
+long_grid = m.grid.astype(np.compat.long)
 
 kernel = torch.tensor([[0, 1, 0], [1, 0, 1], [0, 1, 0]]).float().to(getPytorchDevice())
 # print kernel type
@@ -99,6 +102,8 @@ conv_grid = torch.nn.functional.conv2d(tensor_grid.unsqueeze(0).unsqueeze(0), ke
 # where conv_grid >= 7, set tensor_grid to 1
 temp_grid = copy.deepcopy(tensor_grid)
 tensor_grid[conv_grid >= 3] = 1
+draw_maze(tensor_grid, canvas, size_rectangles)
+time.sleep(0.3)
 # while tensor_grid not equal to temp_grid
 count = 0
 # TODO problem: tensor_grid and temp_grid are the same but they shouldnt
