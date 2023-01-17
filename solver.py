@@ -54,7 +54,7 @@ def bfs(grid, start):
             path.append(start)
             path.reverse()
             return True, path, seen
-        for y2, x2 in ((y + 1, x), (y - 1, x), (y, x + 1), (y, x - 1)):  # directions
+        for y2, x2 in ((y + 1, x), (y, x + 1), (y - 1, x), (y, x - 1)):  # directions
             if (0 <= x2 < width and  # X-axis in range
                     0 <= y2 < height and  # y-axis
                     grid[y2][x2] != 1 and  # not a wall
