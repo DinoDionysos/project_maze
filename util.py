@@ -48,7 +48,7 @@ def showNPNG(grids, cmaps, titles):
     """Generate a simple image of the maze."""
     fig = plt.figure(figsize=(10, 5))
     for i in range(len(grids)):
-        plt.subplot(1, 3, i + 1)
+        plt.subplot(1, len(grids), i + 1)
         plt.imshow(grids[i], cmap=cmaps[i], interpolation='nearest')
         plt.xticks([]), plt.yticks([])
         plt.title(titles[i])
