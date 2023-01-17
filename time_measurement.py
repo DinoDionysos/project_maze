@@ -74,12 +74,19 @@ end = time.time()
 dfs_time = end - start
 print("time dfs: ", dfs_time)
 
+# do CA one time to allocate memory on the GPU and then do it again with time
+# measurement
+ca_grid = copy.deepcopy(m.grid)
+ca_grid[m.start[0], m.start[1] - 1] = 0
+ca_grid[m.end[0], m.end[1] + 1] = 0
+kernel = torch.tensor([[0, 1, 0], [1, 0, 1], [0, 1, 0]]).float().to(getPytorchDevice())
+count, tensor_grid = ca(ca_grid, kernel)
+
 # for CA
 ca_grid = copy.deepcopy(m.grid)
 ca_grid[m.start[0], m.start[1] - 1] = 0
 ca_grid[m.end[0], m.end[1] + 1] = 0
 kernel = torch.tensor([[0, 1, 0], [1, 0, 1], [0, 1, 0]]).float().to(getPytorchDevice())
-
 # start time
 start_time = time.time()
 count, tensor_grid = ca(ca_grid, kernel)
@@ -92,11 +99,13 @@ print("time CA: ", ca_time)
 # plot
 tensor_grid = tensor_grid.cpu().numpy()
 grid_with_path = copy.deepcopy(m.grid)
+grid_original = copy.deepcopy(m.grid)
 grid_with_path[tensor_grid == 0] = 5
 
-grids = [grid_with_path, bfs_grid, dfs_grid]
-cmaps = [cmap2, cmap2, cmap2]
+grids = [grid_original, grid_with_path, bfs_grid, dfs_grid]
+cmaps = ['Greys', cmap2, cmap2, cmap2]
 titles = []
+titles.append("original \n")
 titles.append("CA, " + "time: " + str(round(ca_time * 1000, 1)) + "ms \n")
 titles.append("BFS, " + "time: " + str(round(bfs_time * 1000, 1)) + "ms, \nfrac seen: " + str(round(bfs_frac_seen, 2)))
 titles.append("DFS, " + "time: " + str(round(dfs_time * 1000, 1)) + "ms, \nfrac seen: " + str(round(dfs_frac_seen, 2)))
