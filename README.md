@@ -5,7 +5,7 @@ pip install matplotlib
 pytorch für cuda: https://pytorch.org/get-started/locally/
 
 # Results
-![results]{https://github.com/DinoDionysos/project_maze/blob/master/images/time_measurement.png}
+![results](https://github.com/DinoDionysos/project_maze/blob/master/images/time_measurement.png)
 
 # Files
 solve_maze_with_bfs.py creates a maze, solves it with BFS and shows the path 
