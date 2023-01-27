@@ -1,9 +1,13 @@
-requirements:
+# Requirements
 
 pip install mazelib
 pip install matplotlib
 pytorch für cuda: https://pytorch.org/get-started/locally/
 
+# Results
+
+
+# Files
 solve_maze_with_bfs.py creates a maze, solves it with BFS and shows the path 
 that it found
 solve_maze_with_dfs.py creates a maze, solves it with DFS and shows the path 
